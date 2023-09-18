@@ -69,7 +69,7 @@ function QuizApp() {
   
     // End of the quiz (check if currentQuestionIndex is the last question)
     if (currentQuestionIndex >= quizQuestions.length - 1) {
-      if (score > (config.passingGrade / 10) - 1) {
+      if (score >= (config.passingGrade / 10)) {
         setShowPassMessage(true);
         setShowRetryPrompt(false);
       }
