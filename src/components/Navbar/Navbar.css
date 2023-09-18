@@ -1,20 +1,37 @@
 /* Navbar.css */
 .navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  background-color: #333; /* Choose your background color */
-  color: white; /* Choose your text color */
-  padding: 10px; /* Add padding as needed */
-  /* Add more styles as needed */
+  background-color: #333;
+  color: white;
+  padding: 10px;
 }
 
 .navbar a {
-  color: white; /* Choose your link text color */
+  color: white;
   text-decoration: none;
-  margin-right: 20px; /* Add spacing between links */
+  margin-right: 20px;
 }
+
+.theme-toggle {
+  display: flex; /* Display the theme toggle and label horizontally */
+  align-items: center; /* Vertically center items */
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+  margin-right: 10px; /* Add spacing between the toggle and links */
+}
+
+/* Rest of your existing CSS styles for the toggle */
 
 /* Style the links on hover or active as needed */
 .navbar a:hover {
