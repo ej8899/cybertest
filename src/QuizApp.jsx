@@ -54,7 +54,7 @@ function QuizApp() {
     if (selectedAnswer === currentQuestion.correctAnswer) {
       setScore(score + 1);
     }
-    console.log(score);
+  
     // Add the current question to the list of asked questions
     setAskedQuestions([...askedQuestions, currentQuestion]);
   
@@ -64,17 +64,16 @@ function QuizApp() {
     if (nextQuestion) {
       // Move to the next question
       setCurrentQuestionIndex(currentQuestionIndex + 1);
-    } else {
-      // End of the quiz
-      if ((score / quizQuestions.length) * 100 < 70) { // Check if score is less than 70%
-        setShowRetryPrompt(true);
-        setShowPassMessage(false); // Hide pass message
-      } else {
-        setShowPassMessage(true);
-        setShowRetryPrompt(false); // Hide retry prompt
-      }
+    }
+  
+    // End of the quiz (check if currentQuestionIndex is the last question)
+    if (currentQuestionIndex >= quizQuestions.length - 1) {
+      setShowRetryPrompt(true); // Show the retry prompt
+      setShowPassMessage(false); // Hide pass message
     }
   };
+  
+  
 
   const handleRetryClick = () => {
     // Reset the quiz by shuffling questions again
