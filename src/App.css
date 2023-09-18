@@ -44,3 +44,7 @@
 .selected-answer {
   outline: none; /* Remove the outline on focus */
 }
+
+.option {
+  margin: 5px;
+}
