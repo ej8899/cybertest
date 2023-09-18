@@ -1,0 +1,22 @@
+/* Navbar.css */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #333; /* Choose your background color */
+  color: white; /* Choose your text color */
+  padding: 10px; /* Add padding as needed */
+  /* Add more styles as needed */
+}
+
+.navbar a {
+  color: white; /* Choose your link text color */
+  text-decoration: none;
+  margin-right: 20px; /* Add spacing between links */
+}
+
+/* Style the links on hover or active as needed */
+.navbar a:hover {
+  text-decoration: underline;
+}
