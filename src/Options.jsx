@@ -3,12 +3,12 @@ import React from 'react';
 
 function Options({ options, onAnswerClick }) {
   return (
-    <div>
+    <div className="options">
       {options.map((option, index) => (
         <button
           key={index}
+          className="option selected-answer" // Add the selected-answer class here
           onClick={() => onAnswerClick(option)}
-          style={{ margin: '10px', padding: '5px 10px' }}
         >
           {option}
         </button>

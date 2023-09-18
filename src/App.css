@@ -40,3 +40,7 @@
 .read-the-docs {
   color: #888;
 }
+
+.selected-answer {
+  outline: none; /* Remove the outline on focus */
+}

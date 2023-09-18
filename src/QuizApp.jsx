@@ -1,7 +1,6 @@
 // QuizApp.jsx
 import React, { useState, useEffect } from 'react';
-import quizData from './quizData'; // the quiz data file
-
+import quizData from './quizData'; // Your quiz data file
 import Question from './Question';
 import Options from './Options';
 import Result from './Result';
@@ -10,6 +9,9 @@ function QuizApp() {
   const [quizQuestions, setQuizQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
+  const [showRetryPrompt, setShowRetryPrompt] = useState(false);
+  const [showPassMessage, setShowPassMessage] = useState(false);
+  const [askedQuestions, setAskedQuestions] = useState([]);
 
   // Shuffle function to randomize questions
   const shuffleArray = (array) => {
@@ -24,24 +26,84 @@ function QuizApp() {
   useEffect(() => {
     // Shuffle the quizData array to randomize the questions
     const shuffledQuestions = shuffleArray(quizData);
-    // Select the first 10 questions
-    const selectedQuestions = shuffledQuestions.slice(0, 10);
+    // Select the first 10 questions, excluding those that have already been asked
+    const remainingQuestions = shuffledQuestions.filter(
+      (question) => !askedQuestions.includes(question)
+    );
+    const selectedQuestions = remainingQuestions.slice(0, 10);
     setQuizQuestions(selectedQuestions);
-  }, []);
+  }, [askedQuestions]);
+
+  const getNextQuestion = () => {
+    // Filter out questions that have already been asked
+    const remainingQuestions = quizQuestions.filter(
+      (question) => !askedQuestions.includes(question)
+    );
+
+    // If there are remaining questions, return the first one
+    if (remainingQuestions.length > 0) {
+      return remainingQuestions[0];
+    } else {
+      // If all questions have been asked, return null
+      return null;
+    }
+  };
 
   const handleAnswerClick = (selectedAnswer) => {
     const currentQuestion = quizQuestions[currentQuestionIndex];
     if (selectedAnswer === currentQuestion.correctAnswer) {
       setScore(score + 1);
     }
+    console.log(score);
+    // Add the current question to the list of asked questions
+    setAskedQuestions([...askedQuestions, currentQuestion]);
+  
+    // Get the next question
+    const nextQuestion = getNextQuestion();
+  
+    if (nextQuestion) {
+      // Move to the next question
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    } else {
+      // End of the quiz
+      if ((score / quizQuestions.length) * 100 < 70) { // Check if score is less than 70%
+        setShowRetryPrompt(true);
+        setShowPassMessage(false); // Hide pass message
+      } else {
+        setShowPassMessage(true);
+        setShowRetryPrompt(false); // Hide retry prompt
+      }
+    }
+  };
 
-    // Move to the next question
-    setCurrentQuestionIndex(currentQuestionIndex + 1);
+  const handleRetryClick = () => {
+    // Reset the quiz by shuffling questions again
+    const shuffledQuestions = shuffleArray(quizData);
+    // Select the first 10 questions, excluding those that have already been asked
+    const remainingQuestions = shuffledQuestions.filter(
+      (question) => !askedQuestions.includes(question)
+    );
+    const selectedQuestions = remainingQuestions.slice(0, 10);
+    setQuizQuestions(selectedQuestions);
+
+    // Reset state variables
+    setCurrentQuestionIndex(0);
+    setScore(0);
+    setShowRetryPrompt(false);
+    setShowPassMessage(false);
+    setAskedQuestions([]);
   };
 
   return (
     <div>
-      {currentQuestionIndex < quizQuestions.length ? (
+      {showRetryPrompt ? (
+        <div>
+          <h2>Your score is less than 70%.</h2>
+          <p>Your Score: {score} / {quizQuestions.length}</p>
+          <p>Would you like to try the test again?</p>
+          <button onClick={handleRetryClick}>Retry</button>
+        </div>
+      ) : currentQuestionIndex < quizQuestions.length ? (
         <>
           <h2>Question {currentQuestionIndex + 1}:</h2>
           <Question question={quizQuestions[currentQuestionIndex].question} />
@@ -49,9 +111,19 @@ function QuizApp() {
             options={quizQuestions[currentQuestionIndex].options}
             onAnswerClick={handleAnswerClick}
           />
+          <p>Your Score: {score} / {quizQuestions.length}</p>
         </>
       ) : (
-        <Result score={score} totalQuestions={quizQuestions.length} />
+        <>
+          {showPassMessage ? (
+            <div>
+              <h2>Congratulations, you passed!</h2>
+              <p>Your Score: {score} / {quizQuestions.length}</p>
+            </div>
+          ) : (
+            <Result score={score} totalQuestions={quizQuestions.length} />
+          )}
+        </>
       )}
     </div>
   );
