@@ -4,6 +4,7 @@ import quizData from './quizData'; // Your quiz data file
 import Question from './Question';
 import Options from './Options';
 import Result from './Result';
+import config from './config'; 
 
 function QuizApp() {
   const [quizQuestions, setQuizQuestions] = useState([]);
@@ -68,8 +69,14 @@ function QuizApp() {
   
     // End of the quiz (check if currentQuestionIndex is the last question)
     if (currentQuestionIndex >= quizQuestions.length - 1) {
-      setShowRetryPrompt(true); // Show the retry prompt
-      setShowPassMessage(false); // Hide pass message
+      if (score > (config.passingGrade / 10) - 1) {
+        setShowPassMessage(true);
+        setShowRetryPrompt(false);
+      }
+      else {
+        setShowRetryPrompt(true); // Show the retry prompt
+       setShowPassMessage(false); // Hide pass message
+      }
     }
   };
   
@@ -97,7 +104,7 @@ function QuizApp() {
     <div>
       {showRetryPrompt ? (
         <div>
-          <h2>Your score is less than 70%.</h2>
+          <h2>Quiz Complete!</h2>
           <p>Your Score: {score} / {quizQuestions.length}</p>
           <p>Would you like to try the test again?</p>
           <button onClick={handleRetryClick}>Retry</button>
