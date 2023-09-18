@@ -1,13 +1,20 @@
 // Options.jsx
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 function Options({ options, onAnswerClick }) {
+  // Shuffle the answer options
+  const shuffledOptions = [...options];
+  for (let i = shuffledOptions.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledOptions[i], shuffledOptions[j]] = [shuffledOptions[j], shuffledOptions[i]];
+  }
+
   return (
     <div className="options">
-      {options.map((option, index) => (
+      {shuffledOptions.map((option, index) => (
         <button
           key={index}
-          className="option selected-answer" // Add the selected-answer class here
+          className="option"
           onClick={() => onAnswerClick(option)}
         >
           {option}
