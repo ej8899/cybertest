@@ -1,6 +1,7 @@
 // config.js
 const config = {
   companyName: "Cybertest, Inc.",
+  quizName: "cybertest!",
   passingGrade: 70,
   socialMediaLinks: {
     website: "https://www.cybertest.com",
