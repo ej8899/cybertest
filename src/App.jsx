@@ -4,6 +4,7 @@ import './App.css'
 import QuizApp from './QuizApp';
 import Navbar from './components/Navbar/Navbar';
 
+
 function App() {
 
   return (

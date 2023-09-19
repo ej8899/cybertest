@@ -6,6 +6,8 @@ import Options from './Options';
 import Result from './Result';
 import config from './config'; 
 
+import { fetchImage } from './utilities/imageSearch';
+
 function QuizApp() {
   const [quizQuestions, setQuizQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -13,6 +15,7 @@ function QuizApp() {
   const [showRetryPrompt, setShowRetryPrompt] = useState(false);
   const [showPassMessage, setShowPassMessage] = useState(false);
   const [askedQuestions, setAskedQuestions] = useState([]);
+  const [image, setImage] = useState(null);
 
   // Shuffle function to randomize questions
   const shuffleArray = (array) => {
@@ -24,6 +27,19 @@ function QuizApp() {
     return shuffledArray;
   };
 
+  useEffect(() => {
+    // Fetch an image for the current question's image keyword
+    if (quizQuestions[currentQuestionIndex] && quizQuestions[currentQuestionIndex].image) {
+      fetchImage(quizQuestions[currentQuestionIndex].image)
+        .then((imageURL) => {
+          setImage(imageURL);
+        })
+        .catch((error) => {
+          console.error('Error fetching image:', error);
+        });
+    }
+  }, [quizQuestions, currentQuestionIndex]);
+  
   useEffect(() => {
     // Shuffle the quizData array to randomize the questions
     const shuffledQuestions = shuffleArray(quizData);
@@ -111,6 +127,7 @@ function QuizApp() {
         </div>
       ) : currentQuestionIndex < quizQuestions.length ? (
         <>
+          {image && <img src={image} alt="Quiz" />}
           <h2>Question {currentQuestionIndex + 1}:</h2>
           <Question question={quizQuestions[currentQuestionIndex].question} />
           <Options
