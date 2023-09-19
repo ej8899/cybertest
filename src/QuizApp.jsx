@@ -31,7 +31,7 @@ function QuizApp() {
     const remainingQuestions = shuffledQuestions.filter(
       (question) => !askedQuestions.includes(question)
     );
-    const selectedQuestions = remainingQuestions.slice(0, 10);
+    const selectedQuestions = remainingQuestions.slice(0, config.numQuestions);
     setQuizQuestions(selectedQuestions);
   }, [askedQuestions]);
 
@@ -69,7 +69,7 @@ function QuizApp() {
   
     // End of the quiz (check if currentQuestionIndex is the last question)
     if (currentQuestionIndex >= quizQuestions.length - 1) {
-      if (score >= (config.passingGrade / 10)) {
+      if (score >= (config.passingGrade / config.numQuestions)) {
         setShowPassMessage(true);
         setShowRetryPrompt(false);
       }
@@ -89,7 +89,7 @@ function QuizApp() {
     const remainingQuestions = shuffledQuestions.filter(
       (question) => !askedQuestions.includes(question)
     );
-    const selectedQuestions = remainingQuestions.slice(0, 10);
+    const selectedQuestions = remainingQuestions.slice(0, config.numQuestions);
     setQuizQuestions(selectedQuestions);
 
     // Reset state variables
