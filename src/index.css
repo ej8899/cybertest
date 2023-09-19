@@ -67,3 +67,24 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* QuizApp.css */
+
+/* Container for the quiz content */
+.quiz-container {
+  display: flex;
+  align-items: center; /* Center vertically */
+}
+
+/* Style for the image */
+.quiz-image {
+  max-width: 200px; /* Adjust the maximum width as needed */
+  margin-right: 20px; /* Add spacing between the image and content */
+}
+
+/* Container for the question, options, and score */
+.quiz-content {
+  flex: 1; /* Take up the remaining space */
+}
+
+/* Additional styling for question, options, and score can be added here */
